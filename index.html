@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>科技股本轮下跌跟踪（400亿以上）</title>
+<style>
+:root{
+--kimi-font-sans:-apple-system,"PingFang SC","Helvetica Neue","Segoe UI",sans-serif;
+--kimi-color-text-primary:#1c1c1e;--kimi-color-text-secondary:#4b4b4f;
+--kimi-color-text-tertiary:#7a7a80;--kimi-color-text-quaternary:#a2a2a8;
+--kimi-color-surface:#ffffff;--kimi-color-surface-muted:#f4f4f5;
+--kimi-color-surface-raised:#fafafa;--kimi-color-border:#e4e4e7;
+--kimi-color-accent:#2f6bff;--kimi-color-on-accent:#ffffff;
+--kimi-color-positive:#16a34a;--kimi-color-warning:#d97706;--kimi-color-danger:#dc2626;
+}
+body{background:#ffffff!important}
+
+/* kimi-fit.css (inlined) */
+[data-kimi-root]{box-sizing:border-box;inline-size:100%;min-inline-size:0;max-inline-size:100%;overflow:visible}
+[data-kimi-root] *{box-sizing:border-box;min-inline-size:0}
+html[data-daimon-size-tier="compact"] [data-kimi-priority="p1"],
+html[data-daimon-size-tier="compact"] [data-kimi-priority="p2"],
+html[data-daimon-size-tier="compact"] [data-kimi-priority="p3"]{display:none!important}
+@media (prefers-reduced-motion: reduce){[data-kimi-root] *{scroll-behavior:auto}}
+/* kimi-host-safe-zone.css (inlined) */
+:root{--daimon-widget-host-safe-inline-end:190px;--daimon-widget-host-safe-block-start:44px}
+.kimi-host-safe-context{container-type:inline-size}
+.kimi-host-safe-header{box-sizing:border-box;min-block-size:var(--daimon-widget-host-safe-block-start,44px);padding-inline-end:var(--daimon-widget-host-safe-inline-end,190px)}
+@container (max-width: 419px){.kimi-host-safe-header{min-block-size:0;padding-block-start:var(--daimon-widget-host-safe-block-start,44px);padding-inline-end:0}}
+
+html,body{margin:0;padding:0;background:transparent}
+body{
+  font-family:var(--kimi-font-sans,-apple-system,"PingFang SC","Helvetica Neue",sans-serif);
+  color:var(--kimi-color-text-primary);
+  letter-spacing:0;
+  font-variant-numeric:tabular-nums;
+  -webkit-text-size-adjust:100%;
+}
+main[data-kimi-root]{padding:4px 16px 12px}
+
+/* header */
+header.kimi-host-safe-header{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+h1{font-size:15px;font-weight:650;margin:0;line-height:1.3}
+header .asof{font-size:11.5px;color:var(--kimi-color-text-tertiary)}
+
+/* P0 */
+.p0{margin-top:6px}
+.p0 .lead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+.p0 output.big{display:inline-block;font-size:30px;font-weight:700;line-height:1.1;color:var(--kimi-color-danger)}
+.p0 .lead .lbl{font-size:12px;color:var(--kimi-color-text-secondary)}
+.p0 .worst{font-size:12px;color:var(--kimi-color-text-secondary)}
+.p0 .worst b{color:var(--kimi-color-danger);font-weight:650}
+.p0 .worst .upb{color:var(--kimi-color-positive);font-weight:650}
+
+/* heat strip = P0 pixel display */
+.heat{margin-top:10px;display:flex;flex-wrap:wrap;gap:2px;align-content:flex-start}
+.heat i{width:7px;height:14px;border-radius:1.5px;display:block}
+.heat .seg{width:3px;height:14px}
+.heat-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;font-size:10.5px;color:var(--kimi-color-text-tertiary);align-items:center}
+.heat-legend .sw{width:10px;height:10px;border-radius:2px;display:inline-block;vertical-align:-1px;margin-right:4px}
+
+/* P1 stats + updown + gainers */
+.p1{margin-top:12px}
+.stats{display:flex;flex-wrap:wrap;gap:8px}
+.stat{min-width:104px;padding:7px 10px;border-radius:8px;background:var(--kimi-color-surface-muted)}
+.stat .v{display:block;font-size:16px;font-weight:650;line-height:1.15}
+.stat .k{display:block;font-size:10.5px;color:var(--kimi-color-text-tertiary);margin-top:2px}
+.stat .v.neg{color:var(--kimi-color-danger)}
+.stat .v.pos{color:var(--kimi-color-positive)}
+
+.updown{display:inline-flex;margin-top:10px;border:1px solid var(--kimi-color-border);border-radius:9px;overflow:hidden}
+.updown button{
+  appearance:none;border:0;background:transparent;font:inherit;font-size:12px;
+  padding:6px 14px;min-height:30px;cursor:pointer;color:var(--kimi-color-text-secondary);
+}
+.updown button+button{border-left:1px solid var(--kimi-color-border)}
+.updown button[aria-pressed="true"]{background:var(--kimi-color-accent);color:var(--kimi-color-on-accent)}
+.updown button:focus-visible{outline:2px solid var(--kimi-color-accent);outline-offset:-2px}
+
+.gainers{margin-top:10px}
+.gainers .gt{font-size:12px;font-weight:650;color:var(--kimi-color-positive);margin-bottom:6px}
+.glist{display:flex;flex-wrap:wrap;gap:6px}
+.glist button{
+  appearance:none;border:1px solid color-mix(in srgb,var(--kimi-color-positive) 45%,var(--kimi-color-border));
+  background:color-mix(in srgb,var(--kimi-color-positive) 8%,transparent);
+  color:var(--kimi-color-text-primary);border-radius:999px;font:inherit;font-size:11.5px;
+  padding:5px 10px;min-height:28px;cursor:pointer;
+}
+.glist button b{color:var(--kimi-color-positive);font-weight:650}
+.glist button:hover{border-color:var(--kimi-color-positive)}
+.glist button:focus-visible{outline:2px solid var(--kimi-color-accent);outline-offset:1px}
+
+/* P2 table: frozen opaque header + per-column filter row */
+.p2{margin-top:12px}
+.tools{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.count{font-size:11.5px;color:var(--kimi-color-text-tertiary)}
+.reset{
+  appearance:none;border:1px solid var(--kimi-color-accent);background:transparent;
+  color:var(--kimi-color-accent);border-radius:999px;font:inherit;font-size:11.5px;
+  padding:5px 12px;min-height:28px;cursor:pointer;
+}
+.reset:hover{background:var(--kimi-color-accent);color:var(--kimi-color-on-accent)}
+.reset:focus-visible{outline:2px solid var(--kimi-color-accent);outline-offset:1px}
+.table-wrap{
+  max-height:460px;overflow-y:auto;overflow-x:auto;border-radius:8px;
+  border:1px solid var(--kimi-color-border);-webkit-overflow-scrolling:touch;
+}
+@media (min-height:700px){.table-wrap{max-height:560px}}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:620px;font-size:12px}
+thead th{
+  position:sticky;z-index:3;padding:0;text-align:left;
+  background:var(--kimi-color-surface); /* 不透明，避免与下方文字冲突 */
+  border-bottom:1px solid var(--kimi-color-border);
+}
+thead tr.hrow th{top:0;z-index:4}
+thead tr.frow th{top:33px;z-index:3;background:var(--kimi-color-surface)}
+thead tr.hrow th button{
+  appearance:none;background:transparent;border:0;font:inherit;font-weight:600;
+  color:var(--kimi-color-text-primary);cursor:pointer;width:100%;height:33px;
+  display:flex;align-items:center;gap:3px;padding:0 10px;text-align:left;white-space:nowrap;
+}
+thead tr.hrow th button .dir{color:var(--kimi-color-accent);font-size:10px}
+thead tr.frow th{padding:3px 6px;height:36px}
+.fctl{width:100%;font:inherit;font-size:11px;min-height:28px;padding:3px 6px;
+  border:1px solid var(--kimi-color-border);border-radius:6px;
+  background:var(--kimi-color-surface);color:var(--kimi-color-text-primary)}
+.fctl:focus-visible{outline:2px solid var(--kimi-color-accent);outline-offset:0}
+tbody td{padding:6px 10px;border-bottom:1px solid var(--kimi-color-border);white-space:nowrap;background:var(--kimi-color-surface)}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--kimi-color-surface-muted)}
+td.num,th.num{text-align:right}
+td.numv{font-weight:600}
+td .sec{color:var(--kimi-color-text-tertiary);font-size:11px}
+.neg{color:var(--kimi-color-danger)}
+.pos{color:var(--kimi-color-positive)}
+.bar{display:inline-block;height:8px;border-radius:2px;vertical-align:middle;margin-right:6px;background:var(--kimi-color-danger);opacity:.75}
+.bar.up{background:var(--kimi-color-positive)}
+td .cellwrap{display:flex;align-items:center;justify-content:flex-end}
+.empty td{padding:18px;text-align:center;color:var(--kimi-color-text-tertiary)}
+
+/* P3 */
+.p3{margin-top:10px;font-size:10.5px;color:var(--kimi-color-text-quaternary);line-height:1.55}
+
+/* compact tier */
+html[data-daimon-size-tier="compact"] .p0 output.big{font-size:24px}
+html[data-daimon-size-tier="compact"] .heat{margin-top:6px}
+html[data-daimon-size-tier="compact"] .heat-legend{display:none}
+html[data-daimon-size-tier="compact"] h1{font-size:13px}
+
+/* iPhone 17 系列等窄屏适配（≤480px CSS 宽度） */
+@media (max-width:480px){
+  main[data-kimi-root]{padding:4px 10px 10px}
+  h1{font-size:14px}
+  .p0 output.big{font-size:25px}
+  .heat i{width:5px;height:10px}
+  .heat .seg{width:2px;height:10px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .stat{min-width:0}
+  .updown{display:flex;width:100%}
+  .updown button{flex:1;padding:6px 4px}
+  table{font-size:11px;min-width:560px}
+  tbody td{padding:5px 7px}
+  thead tr.hrow th button{padding:0 7px}
+  .glist button{font-size:11px;padding:4px 8px}
+  .table-wrap{max-height:62vh}
+}
+</style>
+</head>
+<body>
+<main data-kimi-root class="kimi-host-safe-context">
+  <header class="kimi-host-safe-header">
+    <h1>科技股本轮下跌跟踪 · 市值400亿以上</h1>
+    <span class="asof">截至 2026-07-17 收盘 · 前复权</span>
+  </header>
+
+  <section class="p0" data-kimi-priority="p0" aria-labelledby="p0label">
+    <div class="lead">
+      <output class="big" id="avgPeak" aria-describedby="p0label">--</output>
+      <span class="lbl" id="p0label">106 家自本轮高点平均回撤</span>
+    </div>
+    <p class="worst" style="margin:6px 0 0">最深板块 <b id="worstSec">--</b>；最深个股 <b id="worstStock">--</b>；较 6/25 仍有 <span class="upb" id="upCnt">--</span> 上涨</p>
+    <div class="heat" id="heat" role="img" aria-label="106只股票热力条：每格代表一只股票，红色越深代表自高点回撤越大，绿色代表较6月25日上涨，按板块分组排列"></div>
+    <div class="heat-legend" aria-hidden="true">
+      <span><i class="sw" style="background:color-mix(in srgb,var(--kimi-color-danger) 90%,transparent)"></i>回撤 &gt;40%</span>
+      <span><i class="sw" style="background:color-mix(in srgb,var(--kimi-color-danger) 45%,transparent)"></i>回撤 20–40%</span>
+      <span><i class="sw" style="background:color-mix(in srgb,var(--kimi-color-danger) 18%,transparent)"></i>回撤 &lt;20%</span>
+      <span><i class="sw" style="background:color-mix(in srgb,var(--kimi-color-positive) 55%,transparent)"></i>较6/25上涨</span>
+    </div>
+  </section>
+
+  <section class="p1" data-kimi-priority="p1" aria-label="统计与上涨名单">
+    <div class="stats" id="stats"></div>
+    <div class="updown" role="group" aria-label="按涨跌筛选">
+      <button type="button" data-u="all" aria-pressed="true">全部 <span id="nAll"></span></button>
+      <button type="button" data-u="up" aria-pressed="false">上涨 <span id="nUp"></span></button>
+      <button type="button" data-u="down" aria-pressed="false">下跌 <span id="nDown"></span></button>
+    </div>
+    <div class="gainers">
+      <div class="gt" id="gt"></div>
+      <div class="glist" id="glist"></div>
+    </div>
+  </section>
+
+  <section class="p2" data-kimi-priority="p2" aria-label="个股明细">
+    <div class="tools"><span class="count" id="count"></span><button type="button" class="reset" id="resetBtn" hidden>✕ 清除筛选，查看全部</button></div>
+    <div class="table-wrap">
+      <table id="tbl">
+        <thead>
+          <tr class="hrow">
+            <th data-k="code"><button type="button">代码<span class="dir"></span></button></th>
+            <th data-k="name"><button type="button">名称<span class="dir"></span></button></th>
+            <th data-k="sector"><button type="button">板块<span class="dir"></span></button></th>
+            <th data-k="mcap" class="num"><button type="button">总市值(亿)<span class="dir"></span></button></th>
+            <th data-k="peak"><button type="button">高点日期<span class="dir"></span></button></th>
+            <th data-k="p1" class="num"><button type="button">自高点%<span class="dir"></span></button></th>
+            <th data-k="p2" class="num"><button type="button">自6/25%<span class="dir"></span></button></th>
+          </tr>
+          <tr class="frow">
+            <th><input class="fctl" id="fCode" type="search" placeholder="筛选" aria-label="按代码筛选"></th>
+            <th><input class="fctl" id="fName" type="search" placeholder="筛选" aria-label="按名称筛选"></th>
+            <th><select class="fctl" id="fSector" aria-label="按板块筛选"></select></th>
+            <th><select class="fctl" id="fMcap" aria-label="按总市值筛选">
+              <option value="">全部</option><option value="g5000">≥5000亿</option>
+              <option value="m1000">1000–5000亿</option><option value="m500">500–1000亿</option>
+              <option value="s400">400–500亿</option></select></th>
+            <th><select class="fctl" id="fPeak" aria-label="按高点日期筛选"></select></th>
+            <th><select class="fctl" id="fP1" aria-label="按自高点涨跌幅筛选">
+              <option value="">全部</option><option value="l40">≤ -40%</option>
+              <option value="l30">-40 ~ -30%</option><option value="l20">-30 ~ -20%</option>
+              <option value="l10">-20 ~ -10%</option><option value="l0">-10 ~ 0%</option></select></th>
+            <th><select class="fctl" id="fP2" aria-label="按自6月25日涨跌幅筛选">
+              <option value="">全部</option><option value="g0">&gt; 0（上涨）</option>
+              <option value="a0">-15 ~ 0%</option><option value="a15">-30 ~ -15%</option>
+              <option value="a30">≤ -30%</option></select></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="p3" data-kimi-priority="p3">
+    口径：本轮下跌按 2026 年 6 月下旬科技指数见顶起算（创业板指 6/25、科创50 6/30）。「自高点%」为个股 6/1 以来前复权最高收盘价至 7/17 收盘的涨跌幅；「自6/25%」为 6/25 收盘至 7/17 收盘，&gt;0 即本轮仍在上涨。总市值按 7/17 不复权收盘价 × 总股本，≥400 亿元入选。数据来源：iFinD。板块划分为人工归类，候选池约 203 只，个别新达标股票可能遗漏。
+  </footer>
+</main>
+
+<script id="stock-data" type="application/json">[{"code": "300442.SZ", "name": "润泽科技", "sector": "IDC/云计算", "mcap": 1056, "peak": "07-01", "p1": -28.3, "p2": -22.8}, {"code": "300408.SZ", "name": "三环集团", "sector": "PCB/元件", "mcap": 1968, "peak": "07-01", "p1": -41.9, "p2": -39.5}, {"code": "000636.SZ", "name": "风华高科", "sector": "PCB/元件", "mcap": 538, "peak": "06-29", "p1": -41.9, "p2": -41.5}, {"code": "002436.SZ", "name": "兴森科技", "sector": "PCB/元件", "mcap": 579, "peak": "06-25", "p1": -36.4, "p2": -36.4}, {"code": "300476.SZ", "name": "胜宏科技", "sector": "PCB/元件", "mcap": 2373, "peak": "06-18", "p1": -34.6, "p2": -31.0}, {"code": "002484.SZ", "name": "江海股份", "sector": "PCB/元件", "mcap": 623, "peak": "06-25", "p1": -34.0, "p2": -34.0}, {"code": "600183.SH", "name": "生益科技", "sector": "PCB/元件", "mcap": 3213, "peak": "06-25", "p1": -29.3, "p2": -29.3}, {"code": "002916.SZ", "name": "深南电路", "sector": "PCB/元件", "mcap": 2275, "peak": "06-30", "p1": -27.1, "p2": -26.6}, {"code": "002938.SZ", "name": "鹏鼎控股", "sector": "PCB/元件", "mcap": 2176, "peak": "06-18", "p1": -21.7, "p2": -17.7}, {"code": "002463.SZ", "name": "沪电股份", "sector": "PCB/元件", "mcap": 2459, "peak": "06-25", "p1": -17.5, "p2": -17.5}, {"code": "002384.SZ", "name": "东山精密", "sector": "PCB/元件", "mcap": 4431, "peak": "06-25", "p1": -12.3, "p2": -12.3}, {"code": "603228.SH", "name": "景旺电子", "sector": "PCB/元件", "mcap": 707, "peak": "06-18", "p1": -11.5, "p2": -7.6}, {"code": "300058.SZ", "name": "蓝色光标", "sector": "传媒/广告", "mcap": 436, "peak": "06-01", "p1": -32.4, "p2": -13.8}, {"code": "002027.SZ", "name": "分众传媒", "sector": "传媒/广告", "mcap": 722, "peak": "06-01", "p1": -8.4, "p2": 8.0}, {"code": "300548.SZ", "name": "博创科技", "sector": "光模块", "mcap": 490, "peak": "06-22", "p1": -44.2, "p2": -41.0}, {"code": "688313.SH", "name": "仕佳光子", "sector": "光模块", "mcap": 533, "peak": "06-24", "p1": -42.0, "p2": -41.0}, {"code": "300620.SZ", "name": "光库科技", "sector": "光模块", "mcap": 595, "peak": "06-24", "p1": -41.2, "p2": -39.6}, {"code": "300394.SZ", "name": "天孚通信", "sector": "光模块", "mcap": 2306, "peak": "06-03", "p1": -40.4, "p2": -38.2}, {"code": "603083.SH", "name": "剑桥科技", "sector": "光模块", "mcap": 649, "peak": "06-24", "p1": -32.8, "p2": -32.4}, {"code": "002281.SZ", "name": "光迅科技", "sector": "光模块", "mcap": 1568, "peak": "06-22", "p1": -31.4, "p2": -27.5}, {"code": "300308.SZ", "name": "中际旭创", "sector": "光模块", "mcap": 10923, "peak": "06-22", "p1": -29.1, "p2": -26.0}, {"code": "300502.SZ", "name": "新易盛", "sector": "光模块", "mcap": 6733, "peak": "06-25", "p1": -20.9, "p2": -20.9}, {"code": "688498.SH", "name": "源杰科技", "sector": "光模块", "mcap": 2062, "peak": "06-30", "p1": -12.2, "p2": -11.7}, {"code": "688525.SH", "name": "佰维存储", "sector": "半导体", "mcap": 1192, "peak": "06-29", "p1": -50.1, "p2": -47.4}, {"code": "301308.SZ", "name": "江波龙", "sector": "半导体", "mcap": 1675, "peak": "06-29", "p1": -45.2, "p2": -41.5}, {"code": "603986.SH", "name": "兆易创新", "sector": "半导体", "mcap": 3250, "peak": "06-29", "p1": -44.9, "p2": -40.3}, {"code": "688008.SH", "name": "澜起科技", "sector": "半导体", "mcap": 2241, "peak": "07-01", "p1": -41.9, "p2": -34.2}, {"code": "300373.SZ", "name": "扬杰科技", "sector": "半导体", "mcap": 506, "peak": "06-30", "p1": -40.8, "p2": -32.3}, {"code": "300223.SZ", "name": "北京君正", "sector": "半导体", "mcap": 744, "peak": "07-03", "p1": -40.7, "p2": -35.2}, {"code": "600460.SH", "name": "士兰微", "sector": "半导体", "mcap": 552, "peak": "06-30", "p1": -39.3, "p2": -33.4}, {"code": "688521.SH", "name": "芯原股份", "sector": "半导体", "mcap": 1218, "peak": "06-30", "p1": -37.6, "p2": -31.5}, {"code": "688396.SH", "name": "华润微", "sector": "半导体", "mcap": 824, "peak": "06-30", "p1": -36.4, "p2": -26.8}, {"code": "688187.SH", "name": "时代电气", "sector": "半导体", "mcap": 609, "peak": "06-30", "p1": -33.4, "p2": -24.4}, {"code": "300782.SZ", "name": "卓胜微", "sector": "半导体", "mcap": 443, "peak": "06-23", "p1": -32.3, "p2": -30.7}, {"code": "688249.SH", "name": "晶合集成", "sector": "半导体", "mcap": 1003, "peak": "07-09", "p1": -30.8, "p2": -22.5}, {"code": "688385.SH", "name": "复旦微电", "sector": "半导体", "mcap": 428, "peak": "07-10", "p1": -29.8, "p2": -18.5}, {"code": "300661.SZ", "name": "圣邦股份", "sector": "半导体", "mcap": 684, "peak": "06-30", "p1": -29.6, "p2": -27.0}, {"code": "002049.SZ", "name": "紫光国微", "sector": "半导体", "mcap": 545, "peak": "06-30", "p1": -27.8, "p2": -26.5}, {"code": "002371.SZ", "name": "北方华创", "sector": "半导体", "mcap": 4913, "peak": "07-01", "p1": -27.6, "p2": -15.1}, {"code": "002185.SZ", "name": "华天科技", "sector": "半导体", "mcap": 622, "peak": "07-14", "p1": -27.1, "p2": -16.4}, {"code": "688047.SH", "name": "龙芯中科", "sector": "半导体", "mcap": 458, "peak": "06-30", "p1": -26.1, "p2": -24.9}, {"code": "688012.SH", "name": "中微公司", "sector": "半导体", "mcap": 3359, "peak": "07-09", "p1": -25.6, "p2": -12.1}, {"code": "688256.SH", "name": "寒武纪", "sector": "半导体", "mcap": 7480, "peak": "06-30", "p1": -25.4, "p2": -20.9}, {"code": "688347.SH", "name": "华虹公司", "sector": "半导体", "mcap": 5370, "peak": "07-09", "p1": -22.8, "p2": -6.5}, {"code": "600584.SH", "name": "长电科技", "sector": "半导体", "mcap": 1530, "peak": "07-01", "p1": -19.8, "p2": -17.9}, {"code": "688981.SH", "name": "中芯国际", "sector": "半导体", "mcap": 11975, "peak": "07-09", "p1": -19.1, "p2": -10.8}, {"code": "688041.SH", "name": "海光信息", "sector": "半导体", "mcap": 7086, "peak": "06-30", "p1": -17.7, "p2": -15.4}, {"code": "002156.SZ", "name": "通富微电", "sector": "半导体", "mcap": 1037, "peak": "07-15", "p1": -13.1, "p2": -12.1}, {"code": "603893.SH", "name": "瑞芯微", "sector": "半导体", "mcap": 854, "peak": "07-16", "p1": -9.1, "p2": 7.2}, {"code": "603501.SH", "name": "韦尔股份", "sector": "半导体", "mcap": 1309, "peak": "07-15", "p1": -6.3, "p2": 16.1}, {"code": "300274.SZ", "name": "阳光电源", "sector": "新能源/光伏", "mcap": 2107, "peak": "06-01", "p1": -41.6, "p2": -33.4}, {"code": "688223.SH", "name": "晶科能源", "sector": "新能源/光伏", "mcap": 412, "peak": "06-01", "p1": -30.7, "p2": -17.8}, {"code": "600438.SH", "name": "通威股份", "sector": "新能源/光伏", "mcap": 472, "peak": "06-01", "p1": -27.9, "p2": -14.4}, {"code": "601012.SH", "name": "隆基绿能", "sector": "新能源/光伏", "mcap": 890, "peak": "06-10", "p1": -16.5, "p2": -6.8}, {"code": "002594.SZ", "name": "比亚迪", "sector": "新能源/整车", "mcap": 8522, "peak": "06-02", "p1": -3.4, "p2": 13.7}, {"code": "002709.SZ", "name": "天赐材料", "sector": "新能源/材料", "mcap": 726, "peak": "06-24", "p1": -36.8, "p2": -35.5}, {"code": "300037.SZ", "name": "新宙邦", "sector": "新能源/材料", "mcap": 455, "peak": "07-01", "p1": -35.4, "p2": -33.1}, {"code": "603799.SH", "name": "华友钴业", "sector": "新能源/材料", "mcap": 701, "peak": "06-22", "p1": -33.0, "p2": -26.3}, {"code": "002812.SZ", "name": "恩捷股份", "sector": "新能源/材料", "mcap": 493, "peak": "06-22", "p1": -30.4, "p2": -26.5}, {"code": "603659.SH", "name": "璞泰来", "sector": "新能源/材料", "mcap": 465, "peak": "06-22", "p1": -29.8, "p2": -24.0}, {"code": "300014.SZ", "name": "亿纬锂能", "sector": "新能源/电池", "mcap": 1123, "peak": "06-22", "p1": -26.4, "p2": -22.7}, {"code": "002074.SZ", "name": "国轩高科", "sector": "新能源/电池", "mcap": 488, "peak": "06-01", "p1": -17.1, "p2": -5.7}, {"code": "300750.SZ", "name": "宁德时代", "sector": "新能源/电池", "mcap": 16656, "peak": "06-02", "p1": -17.0, "p2": -10.4}, {"code": "002850.SZ", "name": "科达利", "sector": "新能源/结构件", "mcap": 515, "peak": "07-03", "p1": -20.5, "p2": -1.4}, {"code": "605117.SH", "name": "德业股份", "sector": "新能源/逆变器", "mcap": 1020, "peak": "06-03", "p1": -30.5, "p2": -19.3}, {"code": "300433.SZ", "name": "蓝思科技", "sector": "消费电子", "mcap": 1807, "peak": "06-18", "p1": -38.1, "p2": -38.0}, {"code": "002600.SZ", "name": "领益智造", "sector": "消费电子", "mcap": 927, "peak": "07-03", "p1": -36.7, "p2": -36.2}, {"code": "601138.SH", "name": "工业富联", "sector": "消费电子", "mcap": 11428, "peak": "06-03", "p1": -28.9, "p2": -25.2}, {"code": "002475.SZ", "name": "立讯精密", "sector": "消费电子", "mcap": 4485, "peak": "06-24", "p1": -22.7, "p2": -22.0}, {"code": "002241.SZ", "name": "歌尔股份", "sector": "消费电子", "mcap": 817, "peak": "06-03", "p1": -14.2, "p2": -3.5}, {"code": "300866.SZ", "name": "安克创新", "sector": "消费电子", "mcap": 645, "peak": "06-01", "p1": -9.9, "p2": 1.1}, {"code": "688036.SH", "name": "传音控股", "sector": "消费电子", "mcap": 717, "peak": "07-10", "p1": -9.1, "p2": 12.1}, {"code": "002602.SZ", "name": "世纪华通", "sector": "游戏", "mcap": 962, "peak": "06-01", "p1": -14.2, "p2": -5.0}, {"code": "002555.SZ", "name": "三七互娱", "sector": "游戏", "mcap": 401, "peak": "06-01", "p1": -8.2, "p2": -4.4}, {"code": "002558.SZ", "name": "巨人网络", "sector": "游戏", "mcap": 553, "peak": "07-16", "p1": -3.8, "p2": 5.0}, {"code": "300418.SZ", "name": "昆仑万维", "sector": "游戏/AI", "mcap": 540, "peak": "07-09", "p1": -16.7, "p2": 2.9}, {"code": "000988.SZ", "name": "华工科技", "sector": "激光/设备", "mcap": 1183, "peak": "06-30", "p1": -36.3, "p2": -32.2}, {"code": "002008.SZ", "name": "大族激光", "sector": "激光/设备", "mcap": 1049, "peak": "06-25", "p1": -33.3, "p2": -33.3}, {"code": "000066.SZ", "name": "中国长城", "sector": "计算机/AI", "mcap": 475, "peak": "06-25", "p1": -28.1, "p2": -28.1}, {"code": "301269.SZ", "name": "华大九天", "sector": "计算机/AI", "mcap": 532, "peak": "07-09", "p1": -21.0, "p2": -11.4}, {"code": "002920.SZ", "name": "德赛西威", "sector": "计算机/AI", "mcap": 490, "peak": "06-01", "p1": -18.6, "p2": 0.0}, {"code": "603019.SH", "name": "中科曙光", "sector": "计算机/AI", "mcap": 1286, "peak": "07-10", "p1": -18.2, "p2": -10.2}, {"code": "601360.SH", "name": "三六零", "sector": "计算机/AI", "mcap": 602, "peak": "06-01", "p1": -17.2, "p2": -3.9}, {"code": "002230.SZ", "name": "科大讯飞", "sector": "计算机/AI", "mcap": 988, "peak": "06-01", "p1": -16.1, "p2": -1.1}, {"code": "688111.SH", "name": "金山办公", "sector": "计算机/AI", "mcap": 1037, "peak": "06-02", "p1": -14.3, "p2": 5.5}, {"code": "000977.SZ", "name": "浪潮信息", "sector": "计算机/AI", "mcap": 1137, "peak": "07-10", "p1": -13.5, "p2": 12.9}, {"code": "600845.SH", "name": "宝信软件", "sector": "计算机/AI", "mcap": 533, "peak": "06-02", "p1": -10.5, "p2": 9.2}, {"code": "300454.SZ", "name": "深信服", "sector": "计算机/AI", "mcap": 464, "peak": "06-02", "p1": -10.3, "p2": 11.7}, {"code": "000938.SZ", "name": "紫光股份", "sector": "计算机/AI", "mcap": 1005, "peak": "07-16", "p1": -9.0, "p2": 23.7}, {"code": "002236.SZ", "name": "大华股份", "sector": "计算机/AI", "mcap": 524, "peak": "07-10", "p1": -7.3, "p2": -3.9}, {"code": "002415.SZ", "name": "海康威视", "sector": "计算机/AI", "mcap": 3038, "peak": "07-09", "p1": -6.3, "p2": -3.7}, {"code": "600941.SH", "name": "中国移动", "sector": "运营商", "mcap": 20253, "peak": "06-02", "p1": -4.9, "p2": 6.5}, {"code": "601728.SH", "name": "中国电信", "sector": "运营商", "mcap": 5500, "peak": "06-10", "p1": -4.3, "p2": 12.1}, {"code": "600050.SH", "name": "中国联通", "sector": "运营商", "mcap": 1332, "peak": "06-02", "p1": -2.5, "p2": 4.4}, {"code": "600487.SH", "name": "亨通光电", "sector": "通信线缆", "mcap": 1440, "peak": "06-25", "p1": -52.4, "p2": -52.4}, {"code": "600522.SH", "name": "中天科技", "sector": "通信线缆", "mcap": 1148, "peak": "06-25", "p1": -50.3, "p2": -50.3}, {"code": "601869.SH", "name": "长飞光纤", "sector": "通信线缆", "mcap": 2993, "peak": "06-24", "p1": -37.7, "p2": -37.1}, {"code": "600498.SH", "name": "烽火通信", "sector": "通信设备", "mcap": 538, "peak": "06-25", "p1": -53.2, "p2": -53.2}, {"code": "000063.SZ", "name": "中兴通讯", "sector": "通信设备", "mcap": 1722, "peak": "07-10", "p1": -11.2, "p2": -6.3}, {"code": "300628.SZ", "name": "亿联网络", "sector": "通信设备", "mcap": 465, "peak": "06-02", "p1": -7.1, "p2": 8.8}, {"code": "300803.SZ", "name": "指南针", "sector": "金融科技", "mcap": 488, "peak": "06-22", "p1": -24.3, "p2": -21.6}, {"code": "300033.SZ", "name": "同花顺", "sector": "金融科技", "mcap": 1622, "peak": "06-25", "p1": -16.8, "p2": -16.8}, {"code": "300059.SZ", "name": "东方财富", "sector": "金融科技", "mcap": 3117, "peak": "07-01", "p1": -8.2, "p2": -6.7}, {"code": "600703.SH", "name": "三安光电", "sector": "面板/光电", "mcap": 621, "peak": "06-24", "p1": -42.9, "p2": -42.5}, {"code": "000725.SZ", "name": "京东方A", "sector": "面板/光电", "mcap": 2249, "peak": "07-02", "p1": -33.3, "p2": -19.3}, {"code": "000100.SZ", "name": "TCL科技", "sector": "面板/光电", "mcap": 1040, "peak": "07-01", "p1": -18.3, "p2": -6.4}]</script>
+<script>
+(function(){
+  var ROWS = JSON.parse(document.getElementById('stock-data').textContent);
+  function mean(a){return a.reduce(function(s,x){return s+x},0)/a.length;}
+  var bySec = {};
+  ROWS.forEach(function(r){ (bySec[r.sector]=bySec[r.sector]||[]).push(r); });
+  var sectors = Object.keys(bySec).map(function(s){
+    return {name:s, n:bySec[s].length, avg:mean(bySec[s].map(function(r){return r.p1}))};
+  }).sort(function(a,b){return a.avg-b.avg;});
+  var secOrder = {}; sectors.forEach(function(s,i){secOrder[s.name]=i;});
+  ROWS.forEach(function(r){ r.so = secOrder[r.sector]; });
+  ROWS.sort(function(a,b){ return a.so-b.so || a.p1-b.p1; });
+
+  var avgAll = mean(ROWS.map(function(r){return r.p1}));
+  var worst = ROWS.reduce(function(m,r){return r.p1<m.p1?r:m;}, ROWS[0]);
+  var gainers = ROWS.filter(function(r){return r.p2>0;}).sort(function(a,b){return b.p2-a.p2;});
+  var med = (function(){var a=ROWS.map(function(r){return r.p1}).sort(function(x,y){return x-y});var n=a.length;return n%2?a[(n-1)/2]:(a[n/2-1]+a[n/2])/2;})();
+
+  function fmt(v){
+    var s = Math.abs(v).toFixed(1);
+    if(v>0) return '+'+s;
+    if(v<0) return '-'+s;
+    return '0.0';
+  }
+
+  /* ---------- P0 ---------- */
+  document.getElementById('avgPeak').textContent = fmt(avgAll)+'%';
+  document.getElementById('worstSec').textContent = sectors[0].name+' '+fmt(sectors[0].avg)+'%';
+  document.getElementById('worstStock').textContent = worst.name+' '+fmt(worst.p1)+'%';
+  document.getElementById('upCnt').textContent = gainers.length+' 家';
+
+  var heat = document.getElementById('heat'), lastSec = null;
+  ROWS.forEach(function(r){
+    if(r.sector!==lastSec){
+      var seg=document.createElement('i');seg.className='seg';seg.setAttribute('aria-hidden','true');
+      heat.appendChild(seg); lastSec=r.sector;
+    }
+    var c=document.createElement('i'), bg;
+    if(r.p2>0){ bg='color-mix(in srgb,var(--kimi-color-positive) 55%,transparent)'; }
+    else{
+      var a=Math.abs(r.p1);
+      var op = a>=40?0.9 : a>=20 ? 0.25+(a-20)/20*0.35 : 0.12+a/20*0.13;
+      bg='color-mix(in srgb,var(--kimi-color-danger) '+Math.round(op*100)+'%,transparent)';
+    }
+    c.style.background=bg;
+    c.title=r.name+' '+r.sector+' 自高点 '+fmt(r.p1)+'%';
+    heat.appendChild(c);
+  });
+
+  /* ---------- P1 stats / updown / gainers ---------- */
+  var stats=document.getElementById('stats');
+  [
+    {k:'自高点回撤中位数', v:fmt(med)+'%', cls:'neg'},
+    {k:'最深个股', v:worst.name+' '+fmt(worst.p1)+'%', cls:'neg'},
+    {k:'回撤超40%', v:ROWS.filter(function(r){return r.p1<=-40}).length+' 家', cls:'neg'},
+    {k:'较6/25上涨', v:gainers.length+' 家', cls:'pos'}
+  ].forEach(function(s){
+    var d=document.createElement('div');d.className='stat';
+    d.innerHTML='<span class="v '+s.cls+'"></span><span class="k"></span>';
+    d.querySelector('.v').textContent=s.v;
+    d.querySelector('.k').textContent=s.k;
+    stats.appendChild(d);
+  });
+
+  document.getElementById('nAll').textContent='('+ROWS.length+')';
+  document.getElementById('nUp').textContent='('+gainers.length+')';
+  document.getElementById('nDown').textContent='('+(ROWS.length-gainers.length)+')';
+
+  var updown='all';
+  Array.prototype.forEach.call(document.querySelectorAll('.updown button'),function(b){
+    b.addEventListener('click',function(){
+      updown=b.getAttribute('data-u');
+      document.querySelectorAll('.updown button').forEach(function(x){
+        x.setAttribute('aria-pressed', x===b?'true':'false');
+      });
+      renderTable();
+    });
+  });
+
+  document.getElementById('gt').textContent='较 6/25 上涨名单（'+gainers.length+' 家，点击可定位）';
+  var glist=document.getElementById('glist');
+  gainers.forEach(function(r){
+    var b=document.createElement('button');b.type='button';
+    b.innerHTML=r.name+' <b>'+fmt(r.p2)+'%</b>';
+    b.addEventListener('click',function(){
+      /* 定位个股：先退出 上涨/下跌 限定，再按名称过滤，保证可见且可恢复 */
+      updown='all';
+      document.querySelectorAll('.updown button').forEach(function(x){
+        x.setAttribute('aria-pressed', x.getAttribute('data-u')==='all'?'true':'false');
+      });
+      document.getElementById('fName').value=r.name; F.name=r.name; renderTable();
+      document.getElementById('resetBtn').scrollIntoView({block:'nearest'});
+    });
+    glist.appendChild(b);
+  });
+
+  /* ---------- P2 table: sort + per-column filters ---------- */
+  var sectorSel=document.getElementById('fSector');
+  sectorSel.innerHTML='<option value="">全部</option>'+sectors.map(function(s){
+    return '<option value="'+s.name+'">'+s.name+' ('+s.n+')</option>';
+  }).join('');
+  var peakSel=document.getElementById('fPeak');
+  var peaks=ROWS.map(function(r){return r.peak}).filter(function(v,i,a){return a.indexOf(v)===i}).sort().reverse();
+  peakSel.innerHTML='<option value="">全部</option>'+peaks.map(function(p){return '<option>'+p+'</option>'}).join('');
+
+  var F={code:'',name:'',sector:'',mcap:'',peak:'',p1:'',p2:''};
+  var sortKey='so', sortDir=1;
+  var tbody=document.getElementById('tbody'), countEl=document.getElementById('count');
+
+  function inRange(v,key){
+    if(key==='g5000')return v>=5000; if(key==='m1000')return v>=1000&&v<5000;
+    if(key==='m500')return v>=500&&v<1000; if(key==='s400')return v<500;
+    if(key==='l40')return v<=-40; if(key==='l30')return v<=-30&&v>-40;
+    if(key==='l20')return v<=-20&&v>-30; if(key==='l10')return v<=-10&&v>-20;
+    if(key==='l0')return v<=0&&v>-15; if(key==='l15')return v<=-15&&v>-30;
+    if(key==='g0')return v>0;
+    if(key==='a0')return v<=0&&v>-15; if(key==='a15')return v<=-15&&v>-30;
+    if(key==='a30')return v<=-30;
+    return true;
+  }
+  function pass(r){
+    if(updown==='up'&&r.p2<=0)return false;
+    if(updown==='down'&&r.p2>0)return false;
+    if(F.code&&r.code.toLowerCase().indexOf(F.code)<0)return false;
+    if(F.name&&r.name.indexOf(F.name)<0)return false;
+    if(F.sector&&r.sector!==F.sector)return false;
+    if(F.mcap&&!inRange(r.mcap,F.mcap))return false;
+    if(F.peak&&r.peak!==F.peak)return false;
+    if(F.p1&&!inRange(r.p1,F.p1))return false;
+    if(F.p2&&!inRange(r.p2,F.p2))return false;
+    return true;
+  }
+  function cmp(a,b){
+    var x,y;
+    if(sortKey==='so'){ x=a.so*1000-a.p1; y=b.so*1000-b.p1; }
+    else{ x=a[sortKey]; y=b[sortKey]; }
+    if(typeof x==='string'){ return sortDir*x.localeCompare(y,'zh-CN'); }
+    return sortDir*(x-y);
+  }
+  function renderTable(){
+    var rows=ROWS.filter(pass).slice().sort(cmp);
+    var maxAbs=Math.max.apply(null,ROWS.map(function(r){return Math.abs(r.p1)}));
+    var html='';
+    rows.forEach(function(r){
+      var w=Math.max(3,Math.round(Math.abs(r.p1)/maxAbs*56));
+      html+='<tr>'
+        +'<td>'+r.code+'</td>'
+        +'<td><b>'+r.name+'</b></td>'
+        +'<td><span class="sec">'+r.sector+'</span></td>'
+        +'<td class="num">'+r.mcap.toLocaleString('zh-CN')+'</td>'
+        +'<td>'+r.peak+'</td>'
+        +'<td class="num numv"><span class="cellwrap"><i class="bar" style="width:'+w+'px"></i><span class="'+(r.p1<0?'neg':'pos')+'">'+fmt(r.p1)+'</span></span></td>'
+        +'<td class="num numv '+(r.p2<0?'neg':'pos')+'">'+fmt(r.p2)+'</td>'
+        +'</tr>';
+    });
+    if(!rows.length) html='<tr class="empty"><td colspan="7">没有符合筛选条件的股票</td></tr>';
+    tbody.innerHTML=html;
+    var filtered = updown!=='all' || F.code || F.name || F.sector || F.mcap || F.peak || F.p1 || F.p2;
+    document.getElementById('resetBtn').hidden = !filtered;
+    countEl.textContent = '显示 '+rows.length+' / '+ROWS.length+' 家' + (filtered?'（已筛选）':'');
+  }
+  document.getElementById('resetBtn').addEventListener('click',function(){
+    F={code:'',name:'',sector:'',mcap:'',peak:'',p1:'',p2:''};
+    ['fCode','fName','fSector','fMcap','fPeak','fP1','fP2'].forEach(function(id){
+      var el=document.getElementById(id); el.value='';
+    });
+    updown='all';
+    document.querySelectorAll('.updown button').forEach(function(x){
+      x.setAttribute('aria-pressed', x.getAttribute('data-u')==='all'?'true':'false');
+    });
+    renderTable();
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll('#tbl thead tr.hrow th'),function(th){
+    th.querySelector('button').addEventListener('click',function(){
+      var k=th.getAttribute('data-k');
+      if(sortKey===k){ sortDir=-sortDir; } else { sortKey=k; sortDir=(k==='name'||k==='code'||k==='sector'||k==='peak')?1:-1; }
+      document.querySelectorAll('#tbl .dir').forEach(function(d){d.textContent='';});
+      th.querySelector('.dir').textContent = sortDir>0?'▲':'▼';
+      renderTable();
+    });
+  });
+  document.getElementById('fCode').addEventListener('input',function(e){F.code=e.target.value.trim().toLowerCase();renderTable();});
+  document.getElementById('fName').addEventListener('input',function(e){F.name=e.target.value.trim();renderTable();});
+  sectorSel.addEventListener('change',function(e){F.sector=e.target.value;renderTable();});
+  document.getElementById('fMcap').addEventListener('change',function(e){F.mcap=e.target.value;renderTable();});
+  peakSel.addEventListener('change',function(e){F.peak=e.target.value;renderTable();});
+  document.getElementById('fP1').addEventListener('change',function(e){F.p1=e.target.value;renderTable();});
+  document.getElementById('fP2').addEventListener('change',function(e){F.p2=e.target.value;renderTable();});
+  renderTable();
+})();
+</script>
+</body>
+</html>
