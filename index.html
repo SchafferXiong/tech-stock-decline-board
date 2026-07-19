@@ -102,6 +102,10 @@ header .asof{font-size:11.5px;color:var(--kimi-color-text-tertiary)}
 }
 .reset:hover{background:var(--kimi-color-accent);color:var(--kimi-color-on-accent)}
 .reset:focus-visible{outline:2px solid var(--kimi-color-accent);outline-offset:1px}
+.sortlab{font-size:11.5px;color:var(--kimi-color-text-tertiary);margin-left:auto}
+.sortsel{width:auto;min-width:104px}
+thead tr.hrow th button .dir{color:var(--kimi-color-text-quaternary);font-size:10px}
+thead tr.hrow th button .dir.on{color:var(--kimi-color-accent)}
 .table-wrap{
   max-height:460px;overflow-y:auto;overflow-x:auto;border-radius:8px;
   border:1px solid var(--kimi-color-border);-webkit-overflow-scrolling:touch;
@@ -203,18 +207,33 @@ html[data-daimon-size-tier="compact"] h1{font-size:13px}
   </section>
 
   <section class="p2" data-kimi-priority="p2" aria-label="个股明细">
-    <div class="tools"><span class="count" id="count"></span><button type="button" class="reset" id="resetBtn" hidden>✕ 清除筛选，查看全部</button></div>
+    <div class="tools">
+      <span class="count" id="count"></span>
+      <button type="button" class="reset" id="resetBtn" hidden>✕ 清除筛选，查看全部</button>
+      <label class="sortlab" for="sortSel">排序</label>
+      <select id="sortSel" class="fctl sortsel" aria-label="选择排序指标">
+        <option value="so">默认（板块+回撤）</option>
+        <option value="p1">自高点%</option>
+        <option value="p2">自6/25%</option>
+        <option value="mcap">总市值</option>
+        <option value="peak">高点日期</option>
+        <option value="sector">板块</option>
+        <option value="name">名称</option>
+        <option value="code">代码</option>
+      </select>
+      <button type="button" class="reset" id="dirBtn" aria-label="切换升序降序">↓ 降序</button>
+    </div>
     <div class="table-wrap">
       <table id="tbl">
         <thead>
           <tr class="hrow">
-            <th data-k="code"><button type="button">代码<span class="dir"></span></button></th>
-            <th data-k="name"><button type="button">名称<span class="dir"></span></button></th>
-            <th data-k="sector"><button type="button">板块<span class="dir"></span></button></th>
-            <th data-k="mcap" class="num"><button type="button">总市值(亿)<span class="dir"></span></button></th>
-            <th data-k="peak"><button type="button">高点日期<span class="dir"></span></button></th>
-            <th data-k="p1" class="num"><button type="button">自高点%<span class="dir"></span></button></th>
-            <th data-k="p2" class="num"><button type="button">自6/25%<span class="dir"></span></button></th>
+            <th data-k="code"><button type="button">代码<span class="dir">⇅</span></button></th>
+            <th data-k="name"><button type="button">名称<span class="dir">⇅</span></button></th>
+            <th data-k="sector"><button type="button">板块<span class="dir">⇅</span></button></th>
+            <th data-k="mcap" class="num"><button type="button">总市值(亿)<span class="dir">⇅</span></button></th>
+            <th data-k="peak"><button type="button">高点日期<span class="dir">⇅</span></button></th>
+            <th data-k="p1" class="num"><button type="button">自高点%<span class="dir">⇅</span></button></th>
+            <th data-k="p2" class="num"><button type="button">自6/25%<span class="dir">⇅</span></button></th>
           </tr>
           <tr class="frow">
             <th><input class="fctl" id="fCode" type="search" placeholder="筛选" aria-label="按代码筛选"></th>
@@ -406,7 +425,25 @@ html[data-daimon-size-tier="compact"] h1{font-size:13px}
     var filtered = updown!=='all' || F.code || F.name || F.sector || F.mcap || F.peak || F.p1 || F.p2;
     document.getElementById('resetBtn').hidden = !filtered;
     countEl.textContent = '显示 '+rows.length+' / '+ROWS.length+' 家' + (filtered?'（已筛选）':'');
+    syncSortUI();
   }
+  /* 排序控件：指标下拉 + 升/降序切换，与表头点击保持同步 */
+  var sortSel=document.getElementById('sortSel'), dirBtn=document.getElementById('dirBtn');
+  function syncSortUI(){
+    document.querySelectorAll('#tbl thead tr.hrow th').forEach(function(th){
+      var d=th.querySelector('.dir'), on=th.getAttribute('data-k')===sortKey;
+      d.textContent = on ? (sortDir>0?'▲':'▼') : '⇅';
+      d.classList.toggle('on', on);
+    });
+    sortSel.value=sortKey;
+    dirBtn.textContent = sortDir>0 ? '↑ 升序' : '↓ 降序';
+  }
+  sortSel.addEventListener('change',function(){
+    sortKey=this.value;
+    sortDir=(sortKey==='name'||sortKey==='code'||sortKey==='peak'||sortKey==='sector'||sortKey==='so')?1:-1;
+    renderTable();
+  });
+  dirBtn.addEventListener('click',function(){ sortDir=-sortDir; renderTable(); });
   document.getElementById('resetBtn').addEventListener('click',function(){
     F={code:'',name:'',sector:'',mcap:'',peak:'',p1:'',p2:''};
     ['fCode','fName','fSector','fMcap','fPeak','fP1','fP2'].forEach(function(id){
@@ -423,8 +460,6 @@ html[data-daimon-size-tier="compact"] h1{font-size:13px}
     th.querySelector('button').addEventListener('click',function(){
       var k=th.getAttribute('data-k');
       if(sortKey===k){ sortDir=-sortDir; } else { sortKey=k; sortDir=(k==='name'||k==='code'||k==='sector'||k==='peak')?1:-1; }
-      document.querySelectorAll('#tbl .dir').forEach(function(d){d.textContent='';});
-      th.querySelector('.dir').textContent = sortDir>0?'▲':'▼';
       renderTable();
     });
   });
